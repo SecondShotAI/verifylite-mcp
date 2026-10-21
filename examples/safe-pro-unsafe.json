@@ -1,0 +1,19 @@
+{
+  "tool": "check_safe",
+  "version": "1.2.0",
+  "tier": "pro",
+  "target": "https://phishing-site.example/",
+  "checkedAt": "2026-10-21T14:00:00.000Z",
+  "durationMs": 910,
+  "verdict": "unsafe",
+  "score": 18,
+  "flags": [
+    { "id": "blocklisted", "severity": "critical", "message": "Listed by Google Web Risk as dangerous", "detail": ["SOCIAL_ENGINEERING"] },
+    { "id": "new_domain", "severity": "high", "message": "Domain registered 6 days ago" },
+    { "id": "insecure_form", "severity": "high", "message": "Form submits data over plain HTTP", "detail": ["http://phishing-site.example/login"] }
+  ],
+  "evidence": {
+    "webRisk": { "checked": true, "source": "Google Web Risk", "threatTypes": ["SOCIAL_ENGINEERING"] },
+    "domain": { "domain": "phishing-site.example", "registered": "2026-10-15T00:00:00Z", "ageDays": 6 }
+  }
+}

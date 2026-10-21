@@ -1,0 +1,13 @@
+{
+  "tool": "check_safe_batch",
+  "version": "1.0.0",
+  "checkedAt": "2026-10-21T14:00:00.000Z",
+  "durationMs": 2100,
+  "count": 3,
+  "summary": { "safe": 2, "caution": 0, "unsafe": 0, "error": 1 },
+  "results": [
+    { "target": "https://example.com/", "verdict": "safe", "score": 88, "flags": ["..."], "evidence": {} },
+    { "target": "https://example.org/", "verdict": "safe", "score": 85, "flags": ["..."], "evidence": {} },
+    { "target": "https://does-not-exist.example/", "verdict": "error", "error": "getaddrinfo ENOTFOUND does-not-exist.example" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "tool": "transcribe",
+  "version": "1.0.0",
+  "model": "turbo",
+  "source": "https://github.com/runpod-workers/sample-inputs/raw/main/audio/gettysburg.wav",
+  "checkedAt": "2026-10-21T14:00:00.000Z",
+  "processingMs": 6200,
+  "gpuMs": 5500,
+  "language": "en",
+  "durationSeconds": 9.8,
+  "text": "Four score and seven years ago our fathers brought forth on this continent a new nation.",
+  "srt": "1\n00:00:00,000 --> 00:00:04,200\nFour score and seven years ago\n\n2\n00:00:04,200 --> 00:00:09,800\nour fathers brought forth on this continent a new nation.\n",
+  "vtt": "WEBVTT\n\n00:00:00.000 --> 00:00:04.200\nFour score and seven years ago\n\n00:00:04.200 --> 00:00:09.800\nour fathers brought forth on this continent a new nation.\n",
+  "segments": [
+    { "start": 0, "end": 4.2, "text": "Four score and seven years ago" },
+    { "start": 4.2, "end": 9.8, "text": "our fathers brought forth on this continent a new nation." }
+  ]
+}

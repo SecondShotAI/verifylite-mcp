@@ -1,0 +1,28 @@
+{
+  "tool": "check_safe",
+  "version": "1.2.0",
+  "tier": "basic",
+  "target": "https://example.com/",
+  "checkedAt": "2026-10-21T14:00:00.000Z",
+  "durationMs": 740,
+  "verdict": "safe",
+  "score": 88,
+  "flags": [
+    { "id": "cert_details_unavailable", "severity": "info", "message": "Certificate is valid, but its expiry date could not be read" },
+    { "id": "missing_csp", "severity": "low", "message": "No Content-Security-Policy header" },
+    { "id": "missing_referrer_policy", "severity": "low", "message": "No Referrer-Policy header" },
+    { "id": "blocklist_not_included", "severity": "info", "message": "Malware/phishing blocklist lookup is included in /safe-pro" },
+    { "id": "exposed_files_skipped", "severity": "info", "message": "Exposed-file checks require verified domain ownership" }
+  ],
+  "evidence": {
+    "tls": { "validatedBy": "https_fetch", "valid": true },
+    "httpRedirect": [
+      { "url": "http://example.com/", "status": 301 },
+      { "url": "https://example.com/", "status": 200 }
+    ],
+    "redirectChain": [{ "url": "https://example.com/", "status": 200 }],
+    "finalStatus": 200,
+    "webRisk": { "checked": false },
+    "domain": { "domain": "example.com", "registered": "1995-08-14T04:00:00Z", "ageDays": 11391 }
+  }
+}
