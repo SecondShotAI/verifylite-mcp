@@ -1,6 +1,6 @@
 # VerifyLite
 
-Pay-per-call **website safety checks**, **web page reading**, **link previews**, **domain and email checks**, **SEO audits**, **URL validation**, **news/RSS reading**, **audio transcription**, **Base on-chain data**, and **agent basics** (time, UUIDs, randomness, IP checks, paid ping) for AI agents. Every call is paid per request in **USDC on Base** via [x402](https://x402.org): no accounts, no API keys. **Requests that fail are not charged.**
+Pay-per-call **website safety checks**, **web page reading**, **link previews**, **domain and email checks**, **SEO audits**, **URL validation**, **prompt-injection checks**, **news/RSS reading**, **audio transcription**, **Base on-chain data**, and **agent basics** (time, UUIDs, randomness, IP checks, paid ping) for AI agents. Every call is paid per request in **USDC on Base** via [x402](https://x402.org): no accounts, no API keys. **Requests that fail are not charged.**
 
 - **Live service:** https://verifylite.hydratinghealingtouch.workers.dev
 - **Remote MCP server:** `https://verifylite.hydratinghealingtouch.workers.dev/mcp` (Streamable HTTP)
@@ -22,7 +22,8 @@ This repository documents the hosted service. The service's source code is not p
 | Link preview (title, description, image, favicon) | `POST /preview` | `link_preview` | $0.002 |
 | Domain report (registration, expiry, DNS, SPF/DMARC) | `POST /domain` | `domain_report` | $0.007 |
 | Email check (format, accepts mail, disposable/role) | `POST /email-check` | `check_email` | $0.003 |
-| SEO check (indexability, title/description, robots, sitemap) | `POST /seo-check` | `seo_check` | $0.004 |
+| SEO check (indexability, title/description, robots, sitemap) | `POST /seo-check` | `seo_check` | $0.01 |
+| Prompt-injection check for text or a web page (hidden instructions, jailbreaks, exfiltration, hidden Unicode/HTML) | `POST /injection-check` | `check_prompt_injection` | $0.0044 |
 | News/RSS reader: latest headlines, links, dates, summaries from any feed or site | `POST /feed` | `read_feed` | $0.0038 |
 | **Base on-chain data** (Base mainnet, read-only) | | | |
 | Wallet balance: ETH, USDC, transaction count, wallet or contract | `POST /chain/balance` | `chain_balance` | $0.0035 |
@@ -103,6 +104,7 @@ Request bodies:
 | `/read`, `/preview`, `/seo-check` | `{"url": "https://..."}` |
 | `/domain` | `{"domain": "example.com"}` |
 | `/email-check` | `{"email": "name@example.com"}` |
+| `/injection-check` | `{"text": "..."}` (up to 50,000 characters) or `{"url": "https://..."}` |
 | `/feed` | `{"url": "https://...", "limit": 20}` (`limit` optional, 1 to 50) |
 | `/chain/balance`, `/chain/token`, `/chain/contract` | `{"address": "0x..."}` |
 | `/chain/tx` | `{"hash": "0x..."}` |
