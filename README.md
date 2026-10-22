@@ -1,6 +1,6 @@
 # VerifyLite
 
-Pay-per-call **website safety checks**, **URL validation**, and **audio transcription** for AI agents. Every call is paid per request in **USDC on Base** via [x402](https://x402.org): no accounts, no API keys. **Requests that fail are not charged.**
+Pay-per-call **website safety checks**, **web page reading**, **link previews**, **domain and email checks**, **SEO audits**, **URL validation**, and **audio transcription** for AI agents. Every call is paid per request in **USDC on Base** via [x402](https://x402.org): no accounts, no API keys. **Requests that fail are not charged.**
 
 - **Live service:** https://verifylite.hydratinghealingtouch.workers.dev
 - **Remote MCP server:** `https://verifylite.hydratinghealingtouch.workers.dev/mcp` (Streamable HTTP)
@@ -18,6 +18,11 @@ This repository documents the hosted service. The service's source code is not p
 | Website safety check + Google Web Risk (malware, phishing) | `POST /safe-pro` | `check_site_safety_pro` | $0.10 |
 | Batch website safety check (up to 8 URLs) | `POST /safe-batch` | `check_sites_batch` | $0.008 per URL |
 | Audio/video transcription with SRT and WebVTT captions | `POST /transcribe` | `transcribe_audio` | $0.05 per file |
+| Web page as clean markdown | `POST /read` | `read_page` | $0.006 |
+| Link preview (title, description, image, favicon) | `POST /preview` | `link_preview` | $0.002 |
+| Domain report (registration, expiry, DNS, SPF/DMARC) | `POST /domain` | `domain_report` | $0.007 |
+| Email check (format, accepts mail, disposable/role) | `POST /email-check` | `check_email` | $0.003 |
+| SEO check (indexability, title/description, robots, sitemap) | `POST /seo-check` | `seo_check` | $0.004 |
 | Current prices | `GET /` | `list_prices` | free |
 
 Prices are introductory launch prices and may change. The live prices are always in the payment request, in `list_prices`, and on the [service page](https://verifylite.hydratinghealingtouch.workers.dev/).
@@ -80,6 +85,9 @@ Request bodies:
 | `/verify`, `/safe`, `/safe-pro` | `{"url": "https://..."}` |
 | `/safe-batch` | `{"urls": ["https://...", "https://..."]}` |
 | `/transcribe` | `{"url": "https://.../audio.mp3", "language": "en", "translate": false}` (`language` and `translate` optional) |
+| `/read`, `/preview`, `/seo-check` | `{"url": "https://..."}` |
+| `/domain` | `{"domain": "example.com"}` |
+| `/email-check` | `{"email": "name@example.com"}` |
 
 Example responses are in [`examples/`](examples/).
 
