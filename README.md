@@ -1,6 +1,6 @@
 # VerifyLite
 
-Pay-per-call **website safety checks**, **web page reading**, **link previews**, **domain and email checks**, **SEO audits**, **URL validation**, and **audio transcription** for AI agents. Every call is paid per request in **USDC on Base** via [x402](https://x402.org): no accounts, no API keys. **Requests that fail are not charged.**
+Pay-per-call **website safety checks**, **web page reading**, **link previews**, **domain and email checks**, **SEO audits**, **URL validation**, **audio transcription**, **Base on-chain data**, and **agent basics** (time, UUIDs, randomness, IP checks, paid ping) for AI agents. Every call is paid per request in **USDC on Base** via [x402](https://x402.org): no accounts, no API keys. **Requests that fail are not charged.**
 
 - **Live service:** https://verifylite.hydratinghealingtouch.workers.dev
 - **Remote MCP server:** `https://verifylite.hydratinghealingtouch.workers.dev/mcp` (Streamable HTTP)
@@ -23,6 +23,19 @@ This repository documents the hosted service. The service's source code is not p
 | Domain report (registration, expiry, DNS, SPF/DMARC) | `POST /domain` | `domain_report` | $0.007 |
 | Email check (format, accepts mail, disposable/role) | `POST /email-check` | `check_email` | $0.003 |
 | SEO check (indexability, title/description, robots, sitemap) | `POST /seo-check` | `seo_check` | $0.004 |
+| **Base on-chain data** (Base mainnet, read-only) | | | |
+| Wallet balance: ETH, USDC, transaction count, wallet or contract | `POST /chain/balance` | `chain_balance` | $0.0035 |
+| Transaction status: success/failed/pending, fee, confirmations, decoded USDC transfers | `POST /chain/tx` | `chain_tx` | $0.0055 |
+| Token info: name, symbol, decimals, total supply | `POST /chain/token` | `chain_token` | $0.0048 |
+| Contract inspection: code size, EIP-1967 proxy, ERC-20/721/1155 detection | `POST /chain/contract` | `chain_contract` | $0.0046 |
+| Gas prices and typical transaction costs | `POST /chain/gas` | `chain_gas` | $0.0015 |
+| Block info: number, time, transaction count, base fee | `POST /chain/block` | `chain_block` | $0.0016 |
+| **Agent basics** | | | |
+| Current time in UTC and any time zone | `POST /time` | `get_time` | $0.0011 |
+| UUID v4 or v7, up to 100 | `POST /uuid` | `new_uuid` | $0.0012 |
+| Secure random numbers or a random pick from a list | `POST /random` | `random_number` | $0.0013 |
+| IP address check (public, private, reserved); your own IP over HTTP | `POST /ip` | `ip_info` | $0.0014 |
+| Paid ping, for testing x402 payment clients | `POST /ping` | `ping` | $0.001 |
 | Current prices | `GET /` | `list_prices` | free |
 
 Prices are introductory launch prices and may change. The live prices are always in the payment request, in `list_prices`, and on the [service page](https://verifylite.hydratinghealingtouch.workers.dev/).
@@ -88,6 +101,15 @@ Request bodies:
 | `/read`, `/preview`, `/seo-check` | `{"url": "https://..."}` |
 | `/domain` | `{"domain": "example.com"}` |
 | `/email-check` | `{"email": "name@example.com"}` |
+| `/chain/balance`, `/chain/token`, `/chain/contract` | `{"address": "0x..."}` |
+| `/chain/tx` | `{"hash": "0x..."}` |
+| `/chain/gas` | `{}` |
+| `/chain/block` | `{"number": "latest"}` (optional) |
+| `/time` | `{"tz": "America/Chicago"}` (optional) |
+| `/uuid` | `{"version": "v7", "count": 5}` (both optional) |
+| `/random` | `{"min": 1, "max": 6, "count": 2}` or `{"choices": ["a", "b", "c"]}` (all optional) |
+| `/ip` | `{"ip": "203.0.113.7"}` (omit to get your own IP) |
+| `/ping` | `{"echo": "hello"}` (optional) |
 
 Example responses are in [`examples/`](examples/).
 
@@ -96,7 +118,7 @@ Example responses are in [`examples/`](examples/).
 - **Network:** Base mainnet (`eip155:8453`)
 - **Asset:** USDC
 - **Facilitator:** Coinbase CDP
-- **Not charged on failure:** any error response (invalid input, unreachable site, file too large, failed transcription, blocklist unavailable) cancels the payment.
+- **Not charged on failure:** any error response (invalid input, unreachable site, file too large, failed transcription, blocklist unavailable, transaction not found, Base network unreachable) cancels the payment.
 
 ## Contact
 

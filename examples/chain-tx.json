@@ -1,0 +1,27 @@
+{
+  "tool": "chain_tx",
+  "version": "1.0.0",
+  "chain": "base",
+  "hash": "0x5c1f…e2a9",
+  "status": "success",
+  "blockNumber": 37204411,
+  "timestamp": "2026-10-21T16:02:13.000Z",
+  "confirmations": 42,
+  "from": "0x50e83cd9fe164b8bac69af3bdff884b62c2ccd04",
+  "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+  "contractCreated": null,
+  "valueEth": "0",
+  "feeEth": "0.00000041",
+  "gasUsed": "62159",
+  "nonce": 17,
+  "methodId": "0xe3ee160e",
+  "usdcTransfers": [
+    {
+      "from": "0x50e83cd9fe164b8bac69af3bdff884b62c2ccd04",
+      "to": "0xb33134504393140cfd963d76f62907d660880932",
+      "usdc": "0.009",
+      "units": "9000"
+    }
+  ],
+  "logCount": 2
+}
