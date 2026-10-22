@@ -30,6 +30,7 @@ This repository documents the hosted service. The service's source code is not p
 | Contract inspection: code size, EIP-1967 proxy, ERC-20/721/1155 detection | `POST /chain/contract` | `chain_contract` | $0.0046 |
 | Gas prices and typical transaction costs | `POST /chain/gas` | `chain_gas` | $0.0015 |
 | Block info: number, time, transaction count, base fee | `POST /chain/block` | `chain_block` | $0.0016 |
+| Crypto prices from Chainlink: ETH, BTC, cbBTC, SOL, USDC, DAI, EUR in USD | `POST /chain/price` | `crypto_price` | $0.0029 |
 | **Agent basics** | | | |
 | Current time in UTC and any time zone | `POST /time` | `get_time` | $0.0011 |
 | UUID v4 or v7, up to 100 | `POST /uuid` | `new_uuid` | $0.0012 |
@@ -104,6 +105,7 @@ Request bodies:
 | `/chain/balance`, `/chain/token`, `/chain/contract` | `{"address": "0x..."}` |
 | `/chain/tx` | `{"hash": "0x..."}` |
 | `/chain/gas` | `{}` |
+| `/chain/price` | `{"pair": "ETH/USD"}` (omit for all pairs) |
 | `/chain/block` | `{"number": "latest"}` (optional) |
 | `/time` | `{"tz": "America/Chicago"}` (optional) |
 | `/uuid` | `{"version": "v7", "count": 5}` (both optional) |
