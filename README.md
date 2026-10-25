@@ -17,7 +17,7 @@ This repository documents the hosted service. The service's source code is not p
 | Website safety check | `POST /safe` | `check_site_safety` | $0.009 |
 | Website safety check + Google Web Risk (malware, phishing) | `POST /safe-pro` | `check_site_safety_pro` | $0.10 |
 | Batch website safety check (up to 8 URLs) | `POST /safe-batch` | `check_sites_batch` | $0.008 per URL |
-| Audio/video transcription with SRT and WebVTT captions | `POST /transcribe` | `transcribe_audio` | $0.05 per file |
+| Audio/video transcription with SRT and WebVTT captions | `POST /transcribe` | `transcribe_audio` | $0.025 per file |
 | Web page as clean markdown | `POST /read` | `read_page` | $0.0028 |
 | Link preview (title, description, image, favicon) | `POST /preview` | `link_preview` | $0.002 |
 | Domain report (registration, expiry, DNS, SPF/DMARC) | `POST /domain` | `domain_report` | $0.007 |
@@ -27,12 +27,13 @@ This repository documents the hosted service. The service's source code is not p
 | Prompt-injection check for text or a web page (hidden instructions, jailbreaks, exfiltration, hidden Unicode/HTML) | `POST /injection-check` | `check_prompt_injection` | $0.0044 |
 | News/RSS reader: latest headlines, links, dates, summaries from any feed or site | `POST /feed` | `read_feed` | $0.0038 |
 | **Base on-chain data** (Base mainnet, read-only) | | | |
-| Wallet balance: ETH, USDC, transaction count, wallet or contract | `POST /chain/balance` | `chain_balance` | $0.0035 |
+| Wallet balance: ETH, USDC, any ERC-20 tokens, transaction count, wallet or contract | `POST /chain/balance` | `chain_balance` | $0.0035 |
 | Transaction status: success/failed/pending, fee, confirmations, decoded USDC transfers | `POST /chain/tx` | `chain_tx` | $0.0055 |
 | Token info: name, symbol, decimals, total supply | `POST /chain/token` | `chain_token` | $0.0048 |
 | Contract inspection: code size, EIP-1967 proxy, ERC-20/721/1155 detection | `POST /chain/contract` | `chain_contract` | $0.0046 |
 | Gas prices and typical transaction costs | `POST /chain/gas` | `chain_gas` | $0.0015 |
 | Block info: number, time, transaction count, base fee | `POST /chain/block` | `chain_block` | $0.0016 |
+| Token safety check: can the owner mint, pause, blacklist, change taxes or upgrade? | `POST /chain/token-safety` | `token_safety_check` | $0.0049 |
 | Crypto prices from Chainlink: ETH, BTC, cbBTC, SOL, USDC, DAI, EUR in USD | `POST /chain/price` | `crypto_price` | $0.0029 |
 | **Agent basics** | | | |
 | Current time in UTC and any time zone | `POST /time` | `get_time` | $0.0011 |
