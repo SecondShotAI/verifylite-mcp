@@ -36,6 +36,8 @@ This repository documents the hosted service. The service's source code is not p
 | Wallet transfer history: recent token transfers in and out | `POST /chain/transfers` | `wallet_transfers` | $0.0047 |
 | Contract activity: recent events decoded, admin actions (upgrades, ownership, pauses) flagged | `POST /chain/events` | `contract_events` | $0.0053 |
 | Token holders: top holders and how concentrated the supply is | `POST /chain/holders` | `token_holders` | $0.0051 |
+| NFT lookup: owner, collection, and metadata (name, image, traits) | `POST /chain/nft` | `nft_lookup` | $0.0056 |
+| Contract read: call any view function, get the decoded result | `POST /chain/call` | `contract_call` | $0.0043 |
 | Basename / ENS lookup: name to address, or address to its verified name | `POST /chain/name` | `name_lookup` | $0.0052 |
 | Token approval check: how much each spender can move from a wallet (incl. Permit2) | `POST /chain/allowance` | `token_allowance_check` | $0.0033 |
 | Token safety check: can the owner mint, pause, blacklist, change taxes or upgrade? | `POST /chain/token-safety` | `token_safety_check` | $0.0049 |
