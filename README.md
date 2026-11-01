@@ -36,7 +36,8 @@ This repository documents the hosted service. The service's source code is not p
 | Block info: number, time, transaction count, base fee | `POST /chain/block` | `chain_block` | $0.0016 |
 | Wallet transfer history: recent token transfers in and out | `POST /chain/transfers` | `wallet_transfers` | $0.0047 |
 | Contract activity: recent events decoded, admin actions (upgrades, ownership, pauses) flagged | `POST /chain/events` | `contract_events` | $0.0053 |
-| Token report: one verdict on a token (owner powers, holder concentration, sanctions/scam lists) | `POST /chain/token-report` | `token_report` | $0.0098 |
+| Honeypot check: can this token be sold, and what are the real buy/sell taxes? (simulated trade) | `POST /chain/honeypot` | `honeypot_check` | $0.0085 |
+| Token report: one verdict on a token (owner powers, holder concentration, sanctions/scam lists, sell test) | `POST /chain/token-report` | `token_report` | $0.0098 |
 | Token holders: top holders and how concentrated the supply is | `POST /chain/holders` | `token_holders` | $0.0051 |
 | NFT lookup: owner, collection, and metadata (name, image, traits) | `POST /chain/nft` | `nft_lookup` | $0.0056 |
 | Contract read: call any view function, get the decoded result | `POST /chain/call` | `contract_call` | $0.0043 |
