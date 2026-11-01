@@ -1,6 +1,6 @@
 # VerifyLite
 
-Pay-per-call **website safety checks**, **web page reading**, **link previews**, **domain and email checks**, **SEO audits**, **URL validation**, **prompt-injection checks**, **JSON repair**, **news/RSS reading**, **audio transcription**, **Base on-chain data**, and **agent basics** (time, UUIDs, randomness, IP checks, paid ping) for AI agents. Every call is paid per request in **USDC on Base** via [x402](https://x402.org): no accounts, no API keys. **Requests that fail are not charged.**
+Pay-per-call **website safety checks**, **web page reading**, **link previews**, **domain and email checks**, **SEO audits**, **URL validation**, **prompt-injection detection**, **package vulnerability checks**, **JSON repair**, **news/RSS reading**, **audio transcription**, **Base on-chain data**, and **agent basics** (time, UUIDs, randomness, IP checks, paid ping) for AI agents. Every call is paid per request in **USDC on Base** via [x402](https://x402.org): no accounts, no API keys. **Requests that fail are not charged.**
 
 - **Live service:** https://verifylite.hydratinghealingtouch.workers.dev
 - **Remote MCP server:** `https://verifylite.hydratinghealingtouch.workers.dev/mcp` (Streamable HTTP)
@@ -24,7 +24,8 @@ This repository documents the hosted service. The service's source code is not p
 | Email check (format, accepts mail, disposable/role) | `POST /email-check` | `check_email` | $0.003 |
 | SEO check (indexability, title/description, robots, sitemap) | `POST /seo-check` | `seo_check` | $0.01 |
 | JSON repair for LLM output, with optional JSON Schema check | `POST /sanitize-json` | `repair_json` | $0.0039 |
-| Prompt-injection check for text or a web page (hidden instructions, jailbreaks, exfiltration, hidden Unicode/HTML) | `POST /injection-check` | `check_prompt_injection` | $0.0044 |
+| Prompt injection detection: clean / suspicious / malicious verdict for agent-bound text or a web page | `POST /injection-check` | `check_prompt_injection` | $0.0044 |
+| Package vulnerability check: known CVEs for npm, PyPI, Go, Maven, Cargo and more (OSV.dev) | `POST /package-check` | `package_vulnerabilities` | $0.0041 |
 | News/RSS reader: latest headlines, links, dates, summaries from any feed or site | `POST /feed` | `read_feed` | $0.0038 |
 | **Base on-chain data** (Base mainnet, read-only) | | | |
 | Wallet balance: ETH, USDC, any ERC-20 tokens, transaction count, wallet or contract | `POST /chain/balance` | `chain_balance` | $0.0035 |
@@ -35,6 +36,7 @@ This repository documents the hosted service. The service's source code is not p
 | Block info: number, time, transaction count, base fee | `POST /chain/block` | `chain_block` | $0.0016 |
 | Wallet transfer history: recent token transfers in and out | `POST /chain/transfers` | `wallet_transfers` | $0.0047 |
 | Contract activity: recent events decoded, admin actions (upgrades, ownership, pauses) flagged | `POST /chain/events` | `contract_events` | $0.0053 |
+| Token report: one verdict on a token (owner powers, holder concentration, sanctions/scam lists) | `POST /chain/token-report` | `token_report` | $0.0098 |
 | Token holders: top holders and how concentrated the supply is | `POST /chain/holders` | `token_holders` | $0.0051 |
 | NFT lookup: owner, collection, and metadata (name, image, traits) | `POST /chain/nft` | `nft_lookup` | $0.0056 |
 | Contract read: call any view function, get the decoded result | `POST /chain/call` | `contract_call` | $0.0043 |
@@ -115,6 +117,7 @@ Request bodies:
 | `/email-check` | `{"email": "name@example.com"}` |
 | `/sanitize-json` | `{"text": "<broken JSON or LLM reply>", "schema": {...}}` (`schema` optional, up to 30,000 characters) |
 | `/injection-check` | `{"text": "..."}` (up to 50,000 characters) or `{"url": "https://..."}` |
+| `/package-check` | `{"ecosystem": "npm", "name": "lodash", "version": "4.17.15"}`, `{"purl": "pkg:pypi/requests@2.19.0"}`, or `{"packages": [...]}` (up to 20) |
 | `/feed` | `{"url": "https://...", "limit": 20}` (`limit` optional, 1 to 50) |
 | `/chain/balance`, `/chain/token`, `/chain/contract` | `{"address": "0x..."}` |
 | `/chain/tx` | `{"hash": "0x..."}` |
