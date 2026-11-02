@@ -26,6 +26,7 @@ This repository documents the hosted service. The service's source code is not p
 | JSON repair for LLM output, with optional JSON Schema check | `POST /sanitize-json` | `repair_json` | $0.0039 |
 | Prompt injection detection: clean / suspicious / malicious verdict for agent-bound text or a web page | `POST /injection-check` | `check_prompt_injection` | $0.0044 |
 | Package vulnerability check: known CVEs for npm, PyPI, Go, Maven, Cargo and more (OSV.dev) | `POST /package-check` | `package_vulnerabilities` | $0.0041 |
+| US Federal Register search: rules, proposed rules and notices by keyword, agency and date, with comment deadlines | `POST /federal-register` | `federal_register_search` | $0.004 |
 | News/RSS reader: latest headlines, links, dates, summaries from any feed or site | `POST /feed` | `read_feed` | $0.0038 |
 | **Base on-chain data** (Base mainnet, read-only) | | | |
 | Wallet balance: ETH, USDC, any ERC-20 tokens, transaction count, wallet or contract | `POST /chain/balance` | `chain_balance` | $0.0035 |
@@ -36,7 +37,8 @@ This repository documents the hosted service. The service's source code is not p
 | Block info: number, time, transaction count, base fee | `POST /chain/block` | `chain_block` | $0.0016 |
 | Wallet transfer history: recent token transfers in and out | `POST /chain/transfers` | `wallet_transfers` | $0.0047 |
 | Contract activity: recent events decoded, admin actions (upgrades, ownership, pauses) flagged | `POST /chain/events` | `contract_events` | $0.0053 |
-| Honeypot check: can this token be sold, and what are the real buy/sell taxes? (simulated trade) | `POST /chain/honeypot` | `honeypot_check` | $0.0085 |
+| Honeypot check: can this token be sold, and what are the real buy/sell taxes? (simulated trade on its WETH or USDC pool) | `POST /chain/honeypot` | `honeypot_check` | $0.0085 |
+| Preflight: should I sign this? Plain-words check of a transaction or signature request, with red flags (unlimited approvals, wallet spenders, off-chain permits, scam-listed addresses, failing calls) | `POST /chain/preflight` | `tx_preflight` | $0.0095 |
 | Token report: one verdict on a token (owner powers, holder concentration, sanctions/scam lists, sell test) | `POST /chain/token-report` | `token_report` | $0.0098 |
 | Token holders: top holders and how concentrated the supply is | `POST /chain/holders` | `token_holders` | $0.0051 |
 | NFT lookup: owner, collection, and metadata (name, image, traits) | `POST /chain/nft` | `nft_lookup` | $0.0056 |
