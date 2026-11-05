@@ -108,6 +108,18 @@ curl -i -X POST https://verifylite.hydratinghealingtouch.workers.dev/safe \
 # HTTP/2 402 ... payment-required: <x402 requirements>
 ```
 
+### Your first paid call in five minutes
+
+Make a new wallet, put about a dollar of USDC on Base in it (it covers hundreds of calls), and never use a key that holds real funds. Then:
+
+```bash
+npm i @x402/fetch @x402/core @x402/evm viem
+curl -O https://raw.githubusercontent.com/SecondShotAI/verifylite-mcp/main/examples/quickstart.mjs
+EVM_PRIVATE_KEY=0x... node quickstart.mjs
+```
+
+[`examples/quickstart.mjs`](examples/quickstart.mjs) is about twenty lines: it pays a $0.001 `/ping`, and includes a commented example of the transaction preflight check. Failed requests are never charged, and the same wallet pays on Arc and Polygon too.
+
 Request bodies:
 
 | Endpoint | Body |
@@ -125,6 +137,10 @@ Request bodies:
 | `/chain/balance`, `/chain/token`, `/chain/contract` | `{"address": "0x..."}` |
 | `/chain/tx` | `{"hash": "0x..."}` |
 | `/chain/gas` | `{}` |
+| `/chain/honeypot` | `{"token": "0x...", "amountEth": 0.05}` (`amountEth` optional) |
+| `/chain/token-report` | `{"token": "0x..."}` |
+| `/chain/preflight` | `{"to": "0x...", "data": "0x...", "value": "0", "from": "0x..."}` or `{"typedData": {...}}` |
+| `/federal-register` | `{"query": "...", "type": "proposed_rule", "agency": "...", "since": "2026-10-01", "commentsOpen": true, "limit": 10}` (all optional), or `{"documentNumber": "2026-12345"}` |
 | `/chain/price` | `{"pair": "ETH/USD"}` (omit for all pairs) |
 | `/chain/block` | `{"number": "latest"}` (optional) |
 | `/time` | `{"tz": "America/Chicago"}` (optional) |
