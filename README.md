@@ -1,5 +1,7 @@
 # VerifyLite
 
+**Verify before you pay or act.** One cheap call tells an agent whether a site, a transaction or a token is safe to touch, with the reasons.
+
 Pay-per-call **website safety checks**, **web page reading**, **link previews**, **domain and email checks**, **SEO audits**, **URL validation**, **prompt-injection detection**, **package vulnerability checks**, **JSON repair**, **news/RSS reading**, **audio transcription**, **Base on-chain data**, and **agent basics** (time, UUIDs, randomness, IP checks, paid ping) for AI agents. Every call is paid per request in **USDC on Base** via [x402](https://x402.org): no accounts, no API keys. **Requests that fail are not charged.**
 
 - **Live service:** https://verifylite.hydratinghealingtouch.workers.dev
