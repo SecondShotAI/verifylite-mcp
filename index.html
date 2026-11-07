@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VerifyLite Status</title>
+<meta name="description" content="Independent uptime record, response times and change history for VerifyLite.">
+<style>
+  :root { --bg:#fafaf7; --card:#fff; --ink:#1b1d1f; --mute:#62676c; --line:#e3e3dc; --ok:#1a7f4b; --bad:#c0392b; --none:#d9d9d2; --link:#0b5cad; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#141618; --card:#1c1f22; --ink:#ececea; --mute:#9aa0a6; --line:#2c3034; --ok:#3fb27f; --bad:#e5604f; --none:#34383c; --link:#6aa9f0; } }
+  :root[data-theme="dark"] { --bg:#141618; --card:#1c1f22; --ink:#ececea; --mute:#9aa0a6; --line:#2c3034; --ok:#3fb27f; --bad:#e5604f; --none:#34383c; --link:#6aa9f0; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:32px 16px 64px; }
+  h1 { font-size:1.6rem; margin:0 0 4px; }
+  h2 { font-size:1.1rem; margin:32px 0 10px; }
+  a { color:var(--link); }
+  .sub { color:var(--mute); margin:0 0 20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; }
+  .now { display:flex; align-items:center; gap:10px; font-size:1.15rem; font-weight:600; }
+  .dot { width:12px; height:12px; border-radius:50%; background:var(--none); flex:none; }
+  .dot.ok { background:var(--ok); } .dot.bad { background:var(--bad); }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px; }
+  .stat { border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  .stat b { display:block; font-size:1.25rem; }
+  .stat span { color:var(--mute); font-size:.85rem; }
+  .bars { display:flex; gap:3px; align-items:stretch; height:34px; margin-top:6px; }
+  .bar { flex:1; border-radius:3px; background:var(--none); min-width:3px; }
+  .bar.ok { background:var(--ok); } .bar.bad { background:var(--bad); }
+  .legend { display:flex; justify-content:space-between; color:var(--mute); font-size:.8rem; margin-top:4px; }
+  table { width:100%; border-collapse:collapse; font-size:.92rem; }
+  td, th { text-align:left; padding:6px 4px; border-bottom:1px solid var(--line); }
+  th { color:var(--mute); font-weight:500; }
+  td.r, th.r { text-align:right; font-variant-numeric:tabular-nums; }
+  .pass { color:var(--ok); } .fail { color:var(--bad); font-weight:600; }
+  .log h3 { font-size:.95rem; margin:14px 0 2px; }
+  .log ul { margin:0; padding-left:20px; }
+  .note { color:var(--mute); font-size:.9rem; }
+  @media (max-width:520px) { .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>VerifyLite status</h1>
+  <p class="sub">An independent record: a scheduled job on GitHub checks the live service every 30 minutes and saves every result, including the bad ones.</p>
+
+  <div class="card">
+    <div class="now"><span class="dot" id="dot"></span><span id="nowText">Loading…</span></div>
+    <div class="grid" id="stats"></div>
+  </div>
+
+  <h2>Last 30 days</h2>
+  <div class="card">
+    <div class="bars" id="bars" role="img" aria-label="Daily uptime for the last 30 days"></div>
+    <div class="legend"><span>30 days ago</span><span>today</span></div>
+    <p class="note" id="barsNote"></p>
+  </div>
+
+  <h2>Latest checks</h2>
+  <div class="card"><table id="checks"><thead><tr><th>Endpoint</th><th class="r">Expected</th><th class="r">Got</th><th class="r">Time</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>What this measures</h2>
+  <div class="card note" id="measures">Loading…</div>
+
+  <h2>Change log</h2>
+  <div class="card log" id="log">Loading…</div>
+
+  <p class="note" style="margin-top:28px">Raw data: <a href="status.json">status.json</a> · <a href="history.csv">history.csv</a> · <a href="latest.json">latest.json</a> · <a href="changelog.json">changelog.json</a>. Service docs: <a href="https://github.com/SecondShotAI/verifylite-mcp">github.com/SecondShotAI/verifylite-mcp</a>.</p>
+</main>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, text, cls) => { const e = document.createElement(tag); if (text !== undefined) e.textContent = text; if (cls) e.className = cls; return e; };
+  const get = (f, type) => fetch(f + "?t=" + Date.now()).then((r) => { if (!r.ok) throw new Error(f); return type === "text" ? r.text() : r.json(); });
+  const fmt = (iso) => new Date(iso).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+
+  get("status.json").then((s) => {
+    $("dot").className = "dot " + (s.now.ok ? "ok" : "bad");
+    $("nowText").textContent = (s.now.ok ? "All checks passing" : "Problem: " + s.now.failed.join(", ")) + " · checked " + fmt(s.generatedAt);
+    const stats = $("stats");
+    for (const w of s.windows) {
+      const d = el("div", undefined, "stat");
+      d.appendChild(el("b", w.upPercent.toFixed(2) + "%"));
+      d.appendChild(el("span", (w.days === 1 ? "24 hours" : w.days + " days") + " · median " + w.medianMs + " ms · " + w.runs + " runs"));
+      stats.appendChild(d);
+    }
+    const since = el("p", "Record started " + (s.recordSince ? fmt(s.recordSince) : "n/a") + " (" + s.totalRuns + " runs). " + (s.lastProblem ? "Last problem: " + fmt(s.lastProblem.time) + (s.lastProblem.failed.length ? " (" + s.lastProblem.failed.join(", ") + ")" : "") + "." : "No problems recorded yet."), "note");
+    $("stats").parentNode.appendChild(since);
+    $("measures").textContent = s.measures;
+  }).catch(() => { $("nowText").textContent = "No data yet. The first check runs within 30 minutes of setup."; });
+
+  get("latest.json").then((l) => {
+    const tb = $("checks").tBodies[0];
+    for (const r of l.results) {
+      const tr = el("tr");
+      tr.appendChild(el("td", r.name));
+      tr.appendChild(el("td", String(r.want), "r"));
+      tr.appendChild(el("td", String(r.status || "no answer") + (r.tools !== undefined ? " (" + r.tools + " tools)" : ""), "r " + (r.ok ? "pass" : "fail")));
+      tr.appendChild(el("td", r.ms + " ms", "r"));
+      tb.appendChild(tr);
+    }
+  }).catch(() => {});
+
+  get("history.csv", "text").then((t) => {
+    const days = new Map();
+    for (const line of t.trim().split("\n").slice(1)) {
+      const p = line.split(",");
+      const d = p[0].slice(0, 10);
+      const v = days.get(d) || { runs: 0, bad: 0 };
+      v.runs++; if (p[1] !== "1") v.bad++;
+      days.set(d, v);
+    }
+    const bars = $("bars");
+    let tracked = 0;
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
+      const v = days.get(d);
+      const b = el("div", undefined, "bar" + (v ? (v.bad ? " bad" : " ok") : ""));
+      b.title = v ? d + ": " + (100 - Math.round((v.bad / v.runs) * 10000) / 100) + "% of " + v.runs + " checks passed" : d + ": no data";
+      if (v) tracked++;
+      bars.appendChild(b);
+    }
+    $("barsNote").textContent = "Green: every check passed that day. Red: at least one check failed. Grey: no data. Hover a bar for the day's figure.";
+  }).catch(() => {});
+
+  get("changelog.json").then((c) => {
+    const log = $("log"); log.textContent = "";
+    for (const e of c) {
+      log.appendChild(el("h3", e.date));
+      const ul = el("ul");
+      for (const i of e.items) ul.appendChild(el("li", i));
+      log.appendChild(ul);
+    }
+  }).catch(() => { $("log").textContent = "Change log unavailable."; });
+})();
+</script>
+</body>
+</html>

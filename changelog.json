@@ -1,0 +1,13 @@
+[
+  { "date": "2026-11-05", "items": ["Quickstart example for paying a call with a plain wallet (examples/quickstart.mjs).", "MCP Registry listing updated to version 1.2.1."] },
+  { "date": "2026-11-02", "items": ["Added /chain/preflight: checks a transaction or signature request before it is signed.", "Added /federal-register: search US Federal Register rules, proposed rules and notices.", "/chain/honeypot sell simulation now covers tokens traded against USDC."] },
+  { "date": "2026-11-01", "items": ["Added /chain/honeypot (simulated sell test) and /chain/token-report.", "Added /chain/sanctions and /package-check.", "Payments accepted on Arc and Polygon as well as Base.", "MCP server updated to 1.2.0."] },
+  { "date": "2026-10-28", "items": ["Added /chain/nft and /chain/call; rewrote /chain/holders."] },
+  { "date": "2026-10-27", "items": ["Added /chain/events, /chain/holders and /chain/transfers."] },
+  { "date": "2026-10-26", "items": ["Added /chain/allowance and /chain/name."] },
+  { "date": "2026-10-25", "items": ["Added the token safety check (/chain/token-safety).", "/chain/balance works for any token.", "/transcribe price set to $0.025."] },
+  { "date": "2026-10-23", "items": ["/read price lowered to $0.0028."] },
+  { "date": "2026-10-22", "items": ["Added the prompt-injection check and JSON repair.", "/read returns Markdown first."] },
+  { "date": "2026-10-21", "items": ["Added the news/RSS reader, Base on-chain pack, Chainlink prices, agent basics, /transcribe and /safe-batch.", "Added the remote MCP server and its MCP Registry listing.", "Uptime monitor now covers /safe-batch and the MCP server."] },
+  { "date": "2026-10-20", "items": ["Launch: URL validation (/verify) and website safety (/safe), paid per call in USDC on Base via x402.", "Uptime monitor started."] }
+]
