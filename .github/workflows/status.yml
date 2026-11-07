@@ -1,0 +1,51 @@
+# Public uptime record. Every 30 minutes this probes the live service, appends
+# the result to history.csv on the gh-pages branch and rebuilds the status page
+# (served by GitHub Pages: Settings -> Pages -> Deploy from branch -> gh-pages).
+# It spends nothing: it only checks that endpoints answer and ask for payment.
+name: Status record
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: status
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Load the saved record
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads "$url" gh-pages >/dev/null 2>&1; then
+            git clone --branch gh-pages --single-branch --depth 20 "$url" pages
+          else
+            git init -b gh-pages pages
+            git -C pages remote add origin "$url"
+          fi
+      - name: Probe and rebuild
+        run: |
+          node status/probe.mjs pages status/changelog.json
+          cp status/index.html pages/index.html
+          touch pages/.nojekyll
+      - name: Save the record
+        run: |
+          cd pages
+          git config user.name "status-bot"
+          git config user.email "status-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "status: $(date -u +%Y-%m-%dT%H:%MZ)" || exit 0
+          git push origin gh-pages

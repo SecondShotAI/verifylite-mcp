@@ -8,6 +8,7 @@ Pay-per-call **website safety checks**, **web page reading**, **link previews**,
 - **Remote MCP server:** `https://verifylite.hydratinghealingtouch.workers.dev/mcp` (Streamable HTTP)
 - **Official MCP Registry:** `io.github.SecondShotAI/verifylite`
 - **Agent docs:** [llms.txt](https://verifylite.hydratinghealingtouch.workers.dev/llms.txt) · [OpenAPI](https://verifylite.hydratinghealingtouch.workers.dev/openapi.json) · [x402 discovery](https://verifylite.hydratinghealingtouch.workers.dev/.well-known/x402)
+- **Status and change log:** [independent uptime record](https://secondshotai.github.io/verifylite-mcp/) (checked every 30 minutes, failures included) and `https://verifylite.hydratinghealingtouch.workers.dev/status`
 
 This repository documents the hosted service. The service's source code is not public.
 
