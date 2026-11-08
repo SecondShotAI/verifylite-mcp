@@ -4,7 +4,7 @@
 // for payment (HTTP 402), that /health is 200, and that the MCP server lists
 // its tools. It spends nothing and does not test paid delivery.
 //
-//   node probe.mjs <data-dir> <changelog.json>
+//   node probe.mjs <data-dir> <changelog.json> [accuracy.json]
 // Reads and writes <data-dir>/history.csv, writes latest.json and status.json.
 import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync } from "node:fs";
 import { join } from "node:path";
@@ -96,5 +96,7 @@ const status = {
 };
 writeFileSync(join(dir, "status.json"), JSON.stringify(status, null, 2));
 if (changelog && existsSync(changelog)) copyFileSync(changelog, join(dir, "changelog.json"));
+const accuracy = process.argv[4];
+if (accuracy && existsSync(accuracy)) copyFileSync(accuracy, join(dir, "accuracy.json"));
 console.log(`${failed.length ? "PROBLEM" : "ok"}: ${passed}/${results.length} checks, median ${median} ms`);
 if (failed.length) console.log("failed: " + failed.join(", "));

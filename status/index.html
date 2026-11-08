@@ -36,6 +36,7 @@
   .log h3 { font-size:.95rem; margin:14px 0 2px; }
   .log ul { margin:0; padding-left:20px; }
   .note { color:var(--mute); font-size:.9rem; }
+  #acc h3 { font-size:.98rem; margin:16px 0 4px; } #acc p { margin:6px 0; } #acc details { margin:6px 0; } #acc summary { cursor:pointer; }
   @media (max-width:520px) { .grid { grid-template-columns:1fr; } }
 </style>
 </head>
@@ -62,10 +63,13 @@
   <h2>What this measures</h2>
   <div class="card note" id="measures">Loading…</div>
 
+  <h2>Accuracy test</h2>
+  <div class="card" id="acc"><p class="note">No accuracy results published yet.</p></div>
+
   <h2>Change log</h2>
   <div class="card log" id="log">Loading…</div>
 
-  <p class="note" style="margin-top:28px">Raw data: <a href="status.json">status.json</a> · <a href="history.csv">history.csv</a> · <a href="latest.json">latest.json</a> · <a href="changelog.json">changelog.json</a>. Service docs: <a href="https://github.com/SecondShotAI/verifylite-mcp">github.com/SecondShotAI/verifylite-mcp</a>.</p>
+  <p class="note" style="margin-top:28px">Raw data: <a href="status.json">status.json</a> · <a href="history.csv">history.csv</a> · <a href="latest.json">latest.json</a> · <a href="accuracy.json">accuracy.json</a> · <a href="changelog.json">changelog.json</a>. Service docs: <a href="https://github.com/SecondShotAI/verifylite-mcp">github.com/SecondShotAI/verifylite-mcp</a>.</p>
 </main>
 <script>
 (function () {
@@ -121,6 +125,46 @@
       bars.appendChild(b);
     }
     $("barsNote").textContent = "Green: every check passed that day. Red: at least one check failed. Grey: no data. Hover a bar for the day's figure.";
+  }).catch(() => {});
+
+
+  get("accuracy.json").then((a) => {
+    const box = $("acc"); box.textContent = "";
+    const rateText = (r) => r && r.of ? r.count + " of " + r.of + " (" + r.percent + "%, 95% range " + r.ci95[0] + "\u2013" + r.ci95[1] + "%)" : "no data";
+    box.appendChild(el("p", "Last run " + fmt(a.generatedAt) + ". " + a.runtime + ". Every number below includes the misses. Small samples mean wide ranges.", "note"));
+    const row = (label, text) => { const p = el("p"); p.appendChild(el("b", label + " ")); p.appendChild(document.createTextNode(text)); box.appendChild(p); };
+    const inj = a.tests && a.tests.injection;
+    if (inj) {
+      box.appendChild(el("h3", inj.check));
+      box.appendChild(el("p", "Data: " + inj.data + ".", "note"));
+      row("Injections caught:", rateText(inj.injectionsCaught));
+      row("Harmless texts wrongly flagged:", rateText(inj.harmlessFalselyFlagged));
+      row("Harmless texts with instruction-like wording wrongly flagged:", rateText(inj.trickyHarmlessFalselyFlagged));
+      if (inj.history && inj.history.length) row("Earlier runs:", inj.history.map((h) => h.date + ": " + h.caught + " of " + h.of + " caught").join("; ") + ".");
+      if (inj.missedInjections && inj.missedInjections.length) {
+        const d = el("details"); d.appendChild(el("summary", "Show " + inj.missedInjections.length + " missed injections"));
+        const ul = el("ul"); for (const m of inj.missedInjections) ul.appendChild(el("li", m)); d.appendChild(ul); box.appendChild(d);
+      }
+    }
+    const site = a.tests && a.tests.siteSafety;
+    if (site) {
+      box.appendChild(el("h3", site.check));
+      box.appendChild(el("p", "Data: " + site.data + ".", "note"));
+      const ph = site.phishingListed, lg = site.legitimate;
+      row("Listed phishing sites reached:", (ph.sampled - ph.couldNotBeReached) + " of " + ph.sampled + " (the rest no longer answer and are left out).");
+      row("Phishing sites flagged caution or unsafe:", rateText(ph.flaggedCautionOrUnsafe));
+      row("Phishing sites marked safe (misses):", rateText(ph.markedSafe));
+      if (ph.noWorkingHttps) {
+        row("Of the reached phishing sites, those with no working HTTPS:", rateText(ph.noWorkingHttps) + ". Most flags come from this one signal.");
+        if (ph.withWorkingHttps) {
+          row("Phishing sites that do have working HTTPS, flagged:", rateText(ph.withWorkingHttps.flaggedCautionOrUnsafe));
+          row("Phishing sites that do have working HTTPS, marked safe (misses):", rateText(ph.withWorkingHttps.markedSafe));
+        }
+      }
+      row("Legitimate sites wrongly flagged caution or unsafe:", rateText(lg.falselyFlaggedCautionOrUnsafe));
+      box.appendChild(el("p", site.note, "note"));
+    }
+    if (a.caveats && a.caveats.length) { box.appendChild(el("h3", "Limits of this test")); const ul = el("ul"); for (const c of a.caveats) ul.appendChild(el("li", c)); box.appendChild(ul); }
   }).catch(() => {});
 
   get("changelog.json").then((c) => {

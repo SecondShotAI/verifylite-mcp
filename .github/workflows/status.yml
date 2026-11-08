@@ -38,7 +38,7 @@ jobs:
           fi
       - name: Probe and rebuild
         run: |
-          node status/probe.mjs pages status/changelog.json
+          node status/probe.mjs pages status/changelog.json status/accuracy.json
           cp status/index.html pages/index.html
           touch pages/.nojekyll
       - name: Save the record
