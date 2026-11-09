@@ -14,68 +14,50 @@ This repository documents the hosted service. The service's source code is not p
 
 ## What it does
 
-| Service | HTTP endpoint | MCP tool | Price |
-|---|---|---|---|
-| URL syntax check (never contacts the site) | `POST /verify` | `verify_url` | $0.005 |
-| Website safety check | `POST /safe` | `check_site_safety` | $0.009 |
-| Website safety check + Google Web Risk (malware, phishing) | `POST /safe-pro` | `check_site_safety_pro` | $0.10 |
-| Batch website safety check (up to 8 URLs) | `POST /safe-batch` | `check_sites_batch` | $0.008 per URL |
-| Audio/video transcription with SRT and WebVTT captions | `POST /transcribe` | `transcribe_audio` | $0.025 per file |
-| Web page as clean markdown | `POST /read` | `read_page` | $0.0028 |
-| Link preview (title, description, image, favicon) | `POST /preview` | `link_preview` | $0.002 |
-| Domain report (registration, expiry, DNS, SPF/DMARC) | `POST /domain` | `domain_report` | $0.007 |
-| Email check (format, accepts mail, disposable/role) | `POST /email-check` | `check_email` | $0.003 |
-| SEO check (indexability, title/description, robots, sitemap) | `POST /seo-check` | `seo_check` | $0.01 |
-| JSON repair for LLM output, with optional JSON Schema check | `POST /sanitize-json` | `repair_json` | $0.0039 |
-| Prompt injection detection: clean / suspicious / malicious verdict for agent-bound text or a web page | `POST /injection-check` | `check_prompt_injection` | $0.0044 |
-| Package vulnerability check: known CVEs for npm, PyPI, Go, Maven, Cargo and more (OSV.dev) | `POST /package-check` | `package_vulnerabilities` | $0.0041 |
-| US Federal Register search: rules, proposed rules and notices by keyword, agency and date, with comment deadlines | `POST /federal-register` | `federal_register_search` | $0.004 |
-| News/RSS reader: latest headlines, links, dates, summaries from any feed or site | `POST /feed` | `read_feed` | $0.0038 |
-| **Base on-chain data** (Base mainnet, read-only) | | | |
-| Wallet balance: ETH, USDC, any ERC-20 tokens, transaction count, wallet or contract | `POST /chain/balance` | `chain_balance` | $0.0035 |
-| Transaction status: success/failed/pending, fee, confirmations, decoded USDC transfers | `POST /chain/tx` | `chain_tx` | $0.0055 |
-| Token info: name, symbol, decimals, total supply | `POST /chain/token` | `chain_token` | $0.0048 |
-| Contract inspection: code size, EIP-1967 proxy, ERC-20/721/1155 detection | `POST /chain/contract` | `chain_contract` | $0.0046 |
-| Gas prices and typical transaction costs | `POST /chain/gas` | `chain_gas` | $0.0015 |
-| Block info: number, time, transaction count, base fee | `POST /chain/block` | `chain_block` | $0.0016 |
-| Wallet transfer history: recent token transfers in and out | `POST /chain/transfers` | `wallet_transfers` | $0.0047 |
-| Contract activity: recent events decoded, admin actions (upgrades, ownership, pauses) flagged | `POST /chain/events` | `contract_events` | $0.0053 |
-| Honeypot check: can this token be sold, and what are the real buy/sell taxes? (simulated trade on its WETH or USDC pool) | `POST /chain/honeypot` | `honeypot_check` | $0.0085 |
-| Preflight: should I sign this? Plain-words check of a transaction or signature request, with red flags (unlimited approvals, wallet spenders, off-chain permits, scam-listed addresses, failing calls) | `POST /chain/preflight` | `tx_preflight` | $0.0095 |
-| Token report: one verdict on a token (owner powers, holder concentration, sanctions/scam lists, sell test) | `POST /chain/token-report` | `token_report` | $0.0098 |
-| Token holders: top holders and how concentrated the supply is | `POST /chain/holders` | `token_holders` | $0.0051 |
-| NFT lookup: owner, collection, and metadata (name, image, traits) | `POST /chain/nft` | `nft_lookup` | $0.0056 |
-| Contract read: call any view function, get the decoded result | `POST /chain/call` | `contract_call` | $0.0043 |
-| Basename / ENS lookup: name to address, or address to its verified name | `POST /chain/name` | `name_lookup` | $0.0052 |
-| Token approval check: how much each spender can move from a wallet (incl. Permit2) | `POST /chain/allowance` | `token_allowance_check` | $0.0033 |
-| Token safety check: can the owner mint, pause, blacklist, change taxes or upgrade? | `POST /chain/token-safety` | `token_safety_check` | $0.0049 |
-| Crypto prices from Chainlink: ETH, BTC, cbBTC, SOL, USDC, DAI, EUR in USD | `POST /chain/price` | `crypto_price` | $0.0029 |
-| **Agent basics** | | | |
-| Current time in UTC and any time zone | `POST /time` | `get_time` | $0.0011 |
-| UUID v4 or v7, up to 100 | `POST /uuid` | `new_uuid` | $0.0012 |
-| Secure random numbers or a random pick from a list | `POST /random` | `random_number` | $0.0013 |
-| IP address check (public, private, reserved); your own IP over HTTP | `POST /ip` | `ip_info` | $0.0014 |
-| Paid ping, for testing x402 payment clients | `POST /ping` | `ping` | $0.001 |
-| Current prices | `GET /` | `list_prices` | free |
+| Tool | Price | Purpose |
+|---|---|---|
+| `/chain/token-report` | $0.0098 | One verdict on a token before buying |
+| `/safe` | $0.009 | Safe to visit or not, before opening a link |
+| `/chain/preflight` | $0.0095 | Should I sign this, before signing |
+| `/injection-check` | $0.0044 | Malicious instructions or not, before following them |
 
-Prices are introductory launch prices and may change. The live prices are always in the payment request, in `list_prices`, and on the [service page](https://verifylite.hydratinghealingtouch.workers.dev/).
+`list_prices` is free. Full prices live there, not in this table — see `list_prices` (free) or the service page. Prices are introductory launch prices and may change. The live prices are always in the payment request, in `list_prices`, and on the [service page](https://verifylite.hydratinghealingtouch.workers.dev/).
 
 ### Website safety check
 
-A passive check: it reads what the site publicly serves, the way a browser does, and doesn't probe for vulnerabilities. It looks at:
-
-- TLS certificate validity
-- HTTP to HTTPS redirect, the redirect chain, and redirects to other domains
-- Security headers (HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy)
-- Mixed content and forms that submit over plain HTTP
-- Domain age from the official registry (RDAP)
-- Pro only: Google Web Risk lookup for malware, social engineering (phishing), and unwanted software
+A passive check: it reads what the site publicly serves, the way a browser does, and doesn't probe for vulnerabilities.
 
 It returns a **verdict** (`safe`, `caution`, or `unsafe`), a **0-100 score**, and every finding as a flag with its evidence. `safe` means no warning signs were found, not a guarantee.
 
+### Deeper website safety check
+
+`/safe-pro` checks for the most common problems to make it safer.
+
 ### Transcription
 
-Whisper (turbo) on a GPU. Send a link to an audio or video file up to 25 MB, about 25 minutes of typical MP3. You get back the full text, timed segments, ready-made **SRT** and **WebVTT** captions, and the detected language. Optionally, it also translates the speech to English.
+Audio/video transcription with SRT and WebVTT captions, $0.025/file.
+
+### Package check
+
+Known CVEs for npm, PyPI, Go, Maven, Cargo.
+
+## Examples
+
+### 1. Token — /chain/token-report, $0.0098
+
+An agent was about to buy a new token on Base. It called /chain/token-report first for $0.0098, got an avoid verdict — it couldn't be sold. It didn't buy.
+
+### 2. Site — /safe, $0.009
+
+An agent got a link in untrusted text. It called /safe first for $0.009, got an unsafe verdict. It didn't open the link.
+
+### 3. Sign — /chain/preflight, $0.0095
+
+An agent was about to sign an approval. It called /chain/preflight first for $0.0095, found it was an unlimited approval. It stopped and didn't sign.
+
+### 4. Injection — /injection-check, $0.0044
+
+An agent got instructions hidden in a webpage. It called /injection-check first for $0.0044, got flagged as malicious. It didn't follow them.
 
 ## Using it over MCP
 
@@ -121,35 +103,16 @@ curl -O https://raw.githubusercontent.com/SecondShotAI/verifylite-mcp/main/examp
 EVM_PRIVATE_KEY=0x... node quickstart.mjs
 ```
 
-[`examples/quickstart.mjs`](examples/quickstart.mjs) is about twenty lines: it pays a $0.001 `/ping`, and includes a commented example of the transaction preflight check. Failed requests are never charged, and the same wallet pays on Arc and Polygon too.
+[`examples/quickstart.mjs`](examples/quickstart.mjs) is about twenty lines: it pays a $0.001 `/ping`, and then runs a transaction preflight check. Failed requests are never charged, and the same wallet pays on Arc and Polygon too.
 
 Request bodies:
 
 | Endpoint | Body |
 |---|---|
-| `/verify`, `/safe`, `/safe-pro` | `{"url": "https://..."}` |
-| `/safe-batch` | `{"urls": ["https://...", "https://..."]}` |
-| `/transcribe` | `{"url": "https://.../audio.mp3", "language": "en", "translate": false}` (`language` and `translate` optional) |
-| `/read`, `/preview`, `/seo-check` | `{"url": "https://..."}` |
-| `/domain` | `{"domain": "example.com"}` |
-| `/email-check` | `{"email": "name@example.com"}` |
-| `/sanitize-json` | `{"text": "<broken JSON or LLM reply>", "schema": {...}}` (`schema` optional, up to 30,000 characters) |
-| `/injection-check` | `{"text": "..."}` (up to 50,000 characters) or `{"url": "https://..."}` |
-| `/package-check` | `{"ecosystem": "npm", "name": "lodash", "version": "4.17.15"}`, `{"purl": "pkg:pypi/requests@2.19.0"}`, or `{"packages": [...]}` (up to 20) |
-| `/feed` | `{"url": "https://...", "limit": 20}` (`limit` optional, 1 to 50) |
-| `/chain/balance`, `/chain/token`, `/chain/contract` | `{"address": "0x..."}` |
-| `/chain/tx` | `{"hash": "0x..."}` |
-| `/chain/gas` | `{}` |
-| `/chain/honeypot` | `{"token": "0x...", "amountEth": 0.05}` (`amountEth` optional) |
 | `/chain/token-report` | `{"token": "0x..."}` |
+| `/safe` | `{"url": "https://..."}` |
 | `/chain/preflight` | `{"to": "0x...", "data": "0x...", "value": "0", "from": "0x..."}` or `{"typedData": {...}}` |
-| `/federal-register` | `{"query": "...", "type": "proposed_rule", "agency": "...", "since": "2026-10-01", "commentsOpen": true, "limit": 10}` (all optional), or `{"documentNumber": "2026-12345"}` |
-| `/chain/price` | `{"pair": "ETH/USD"}` (omit for all pairs) |
-| `/chain/block` | `{"number": "latest"}` (optional) |
-| `/time` | `{"tz": "America/Chicago"}` (optional) |
-| `/uuid` | `{"version": "v7", "count": 5}` (both optional) |
-| `/random` | `{"min": 1, "max": 6, "count": 2}` or `{"choices": ["a", "b", "c"]}` (all optional) |
-| `/ip` | `{"ip": "203.0.113.7"}` (omit to get your own IP) |
+| `/injection-check` | `{"text": "..."}` (up to 50,000 characters) or `{"url": "https://..."}` |
 | `/ping` | `{"echo": "hello"}` (optional) |
 
 Example responses are in [`examples/`](examples/).
@@ -158,9 +121,8 @@ Example responses are in [`examples/`](examples/).
 
 - **Network:** Base mainnet (`eip155:8453`)
 - **Asset:** USDC
-- **Facilitator:** Coinbase CDP
-- **Not charged on failure:** any error response (invalid input, unreachable site, file too large, failed transcription, blocklist unavailable, transaction not found, Base network unreachable) cancels the payment.
+- **Not charged on failure:** any error response cancels the payment.
 
 ## Contact
 
-Operated by Unfallowed Ground LLC. Open an issue in this repository for questions or problems.
+Operated by Unfollowed Ground LLC. Open an issue in this repository for questions or problems.
