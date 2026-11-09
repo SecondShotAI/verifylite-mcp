@@ -25,9 +25,9 @@ const ping = await fetchPaid(`${BASE_URL}/ping`, {
 console.log("ping:", ping.status, await ping.json());
 
 // 2. A real one: explain a transaction before signing it (about $0.0095).
-// const check = await fetchPaid(`${BASE_URL}/chain/preflight`, {
-//   method: "POST",
-//   headers: { "content-type": "application/json" },
-//   body: JSON.stringify({ to: "0x833589fCD6eDb6E08f4c7C32D4f71b54bDa02913", data: "0x095ea7b3...", from: "0xYourWallet" }),
-// });
-// console.log((await check.json()).summary);
+const check = await fetchPaid(`${BASE_URL}/chain/preflight`, {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({ to: "0x833589fCD6eDb6E8f4c7C32D4f71b54bDa02913", data: "0x095ea7b3...", from: "0xYourWallet" }),
+});
+console.log((await check.json()).summary);
