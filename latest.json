@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-09T02:38:23.940Z",
+  "checkedAt": "2026-11-09T11:20:51.226Z",
   "base": "https://verifylite.hydratinghealingtouch.workers.dev",
   "ok": true,
   "passed": 14,
@@ -9,98 +9,98 @@
       "name": "/health",
       "want": 200,
       "status": 200,
-      "ms": 433,
+      "ms": 178,
       "ok": true
     },
     {
       "name": "/safe",
       "want": 402,
       "status": 402,
-      "ms": 301,
+      "ms": 77,
       "ok": true
     },
     {
       "name": "/read",
       "want": 402,
       "status": 402,
-      "ms": 620,
+      "ms": 666,
       "ok": true
     },
     {
       "name": "/domain",
       "want": 402,
       "status": 402,
-      "ms": 14,
+      "ms": 44,
       "ok": true
     },
     {
       "name": "/email-check",
       "want": 402,
       "status": 402,
-      "ms": 28,
+      "ms": 38,
       "ok": true
     },
     {
       "name": "/injection-check",
       "want": 402,
       "status": 402,
-      "ms": 27,
+      "ms": 24,
       "ok": true
     },
     {
       "name": "/package-check",
       "want": 402,
       "status": 402,
-      "ms": 41,
+      "ms": 30,
       "ok": true
     },
     {
       "name": "/chain/balance",
       "want": 402,
       "status": 402,
-      "ms": 30,
+      "ms": 37,
       "ok": true
     },
     {
       "name": "/chain/token-report",
       "want": 402,
       "status": 402,
-      "ms": 12,
+      "ms": 21,
       "ok": true
     },
     {
       "name": "/chain/honeypot",
       "want": 402,
       "status": 402,
-      "ms": 27,
+      "ms": 19,
       "ok": true
     },
     {
       "name": "/chain/preflight",
       "want": 402,
       "status": 402,
-      "ms": 11,
+      "ms": 17,
       "ok": true
     },
     {
       "name": "/chain/sanctions",
       "want": 402,
       "status": 402,
-      "ms": 11,
+      "ms": 17,
       "ok": true
     },
     {
       "name": "/federal-register",
       "want": 402,
       "status": 402,
-      "ms": 29,
+      "ms": 32,
       "ok": true
     },
     {
       "name": "/mcp tools/list",
       "want": "40+ tools",
       "status": 200,
-      "ms": 43,
+      "ms": 63,
       "tools": 40,
       "ok": true
     }
