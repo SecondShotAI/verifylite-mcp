@@ -1,5 +1,11 @@
 [
   {
+    "date": "2026-11-10",
+    "items": [
+      "Website safety check: missing security headers or a missing HTTP-to-HTTPS redirect now lower the score but no longer turn the verdict to caution on their own. On 394 popular sites the false-caution rate fell from 11.7% to 4.6% (95% interval 2.9-7.1%). Phishing detection is still not measured."
+    ]
+  },
+  {
     "date": "2026-11-08",
     "items": [
       "Published the first accuracy test (see the Accuracy section on this page), including the misses.",
