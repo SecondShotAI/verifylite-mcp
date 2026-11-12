@@ -105,6 +105,18 @@ EVM_PRIVATE_KEY=0x... node quickstart.mjs
 
 [`examples/quickstart.mjs`](examples/quickstart.mjs) is about twenty lines: it pays a $0.001 `/ping`, and then runs a transaction preflight check. Failed requests are never charged, and the same wallet pays on Arc and Polygon too.
 
+### Verify before you act
+
+One script, three checks an agent runs before it trusts something: a site (`/safe`), untrusted text (`/injection-check`) and a token on Base (`/chain/token-report`). About $0.023 in total. [verify-before-you-act.mjs](examples/verify-before-you-act.mjs)
+
+| Before you... | Call | Act on | Stop on |
+|---|---|---|---|
+| visit or pay a site | `POST /safe` `{"url": ...}` | `safe` | `caution`, `unsafe` |
+| let your model read text | `POST /injection-check` `{"text": ...}` | `clean` | `suspicious`, `malicious` |
+| buy or accept a token | `POST /chain/token-report` `{"token": "0x..."}` | `ok`, `known_issuer` | `caution`, `avoid` |
+
+The site check looks at technical signals (TLS, redirects, mixed content, forms, domain age). It does not claim to detect phishing. See the [measured accuracy](https://secondshotai.github.io/verifylite-mcp/).
+
 Request bodies:
 
 | Endpoint | Body |
