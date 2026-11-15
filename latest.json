@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-15T15:36:13.465Z",
+  "checkedAt": "2026-11-15T20:33:23.541Z",
   "base": "https://verifylite.hydratinghealingtouch.workers.dev",
   "ok": true,
   "passed": 14,
@@ -9,7 +9,7 @@
       "name": "/health",
       "want": 200,
       "status": 200,
-      "ms": 444,
+      "ms": 396,
       "ok": true
     },
     {
@@ -23,7 +23,7 @@
       "name": "/read",
       "want": 402,
       "status": 402,
-      "ms": 840,
+      "ms": 703,
       "ok": true
     },
     {
@@ -37,21 +37,21 @@
       "name": "/email-check",
       "want": 402,
       "status": 402,
-      "ms": 40,
+      "ms": 44,
       "ok": true
     },
     {
       "name": "/injection-check",
       "want": 402,
       "status": 402,
-      "ms": 58,
+      "ms": 15,
       "ok": true
     },
     {
       "name": "/package-check",
       "want": 402,
       "status": 402,
-      "ms": 39,
+      "ms": 55,
       "ok": true
     },
     {
@@ -65,42 +65,42 @@
       "name": "/chain/token-report",
       "want": 402,
       "status": 402,
-      "ms": 39,
+      "ms": 37,
       "ok": true
     },
     {
       "name": "/chain/honeypot",
       "want": 402,
       "status": 402,
-      "ms": 21,
+      "ms": 14,
       "ok": true
     },
     {
       "name": "/chain/preflight",
       "want": 402,
       "status": 402,
-      "ms": 36,
+      "ms": 44,
       "ok": true
     },
     {
       "name": "/chain/sanctions",
       "want": 402,
       "status": 402,
-      "ms": 19,
+      "ms": 13,
       "ok": true
     },
     {
       "name": "/federal-register",
       "want": 402,
       "status": 402,
-      "ms": 20,
+      "ms": 41,
       "ok": true
     },
     {
       "name": "/mcp tools/list",
       "want": "40+ tools",
       "status": 200,
-      "ms": 54,
+      "ms": 28,
       "tools": 40,
       "ok": true
     }
