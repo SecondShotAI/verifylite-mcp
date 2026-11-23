@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T11:13:41.487Z",
+  "generatedAt": "2026-11-23T22:53:39.955Z",
   "base": "https://verifylite.hydratinghealingtouch.workers.dev",
   "now": {
     "ok": true,
@@ -10,7 +10,7 @@
   "windows": [
     {
       "days": 1,
-      "runs": 4,
+      "runs": 3,
       "upPercent": 100,
       "medianMs": 41
     },
@@ -22,13 +22,13 @@
     },
     {
       "days": 30,
-      "runs": 59,
+      "runs": 60,
       "upPercent": 100,
-      "medianMs": 41
+      "medianMs": 42
     }
   ],
   "recordSince": "2026-11-07T11:48:38.075Z",
-  "totalRuns": 59,
+  "totalRuns": 60,
   "lastProblem": null,
   "measures": "Each run makes one request per endpoint with no retries. A check passes when /health answers 200, every paid endpoint answers 402 (payment required), and the MCP server lists its full tool set. It does not make paid calls, so it shows availability, not result quality."
 }
