@@ -5,7 +5,7 @@
 //
 // Use a NEW wallet holding a little USDC on Base. Never use a key that holds real funds.
 // Total cost for this script: about $0.023 at launch prices.
-// Payment code is the same as quickstart.mjs. Response fields match the service code (site: verdict + score; text and token: verdict + riskScore).
+// Tested Nov 23, 2026 with a paid run of all three calls (via a different payer client; the x402 payment flow is the same). Fields: site = verdict + score; text and token = verdict + riskScore.
 import { wrapFetchWithPayment } from "@x402/fetch";
 import { x402Client } from "@x402/core/client";
 import { registerExactEvmScheme } from "@x402/evm/exact/client";
@@ -38,7 +38,7 @@ console.log("text verdict:", text.data.verdict, "risk", text.data.riskScore);
 
 // 3. Before you buy or accept a token on Base: /chain/token-report (about $0.0098).
 //    This is USDC on Base, so expect a known-issuer verdict. Swap in any token address.
-const token = await call("/chain/token-report", { token: "0x833589fCD6eDb6E8f4c7C32D4f71b54bDa02913" });
+const token = await call("/chain/token-report", { token: "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913" });
 console.log("token verdict:", token.data.verdict, "risk", token.data.riskScore);
 
 // Act only on "safe", "clean", "ok" or "known_issuer". Treat caution, suspicious, malicious, avoid and unsafe as a stop.

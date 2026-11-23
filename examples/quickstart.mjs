@@ -28,6 +28,6 @@ console.log("ping:", ping.status, await ping.json());
 const check = await fetchPaid(`${BASE_URL}/chain/preflight`, {
   method: "POST",
   headers: { "content-type": "application/json" },
-  body: JSON.stringify({ to: "0x833589fCD6eDb6E8f4c7C32D4f71b54bDa02913", data: "0x095ea7b3...", from: "0xYourWallet" }),
+  body: JSON.stringify({ to: "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", data: "0x095ea7b3...", from: "0xYourWallet" }),
 });
 console.log((await check.json()).summary);
