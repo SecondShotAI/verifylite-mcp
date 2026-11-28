@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-27T23:42:26.458Z",
+  "checkedAt": "2026-11-28T07:35:57.534Z",
   "base": "https://verifylite.hydratinghealingtouch.workers.dev",
   "ok": true,
   "passed": 14,
@@ -9,49 +9,49 @@
       "name": "/health",
       "want": 200,
       "status": 200,
-      "ms": 343,
+      "ms": 161,
       "ok": true
     },
     {
       "name": "/safe",
       "want": 402,
       "status": 402,
-      "ms": 458,
+      "ms": 270,
       "ok": true
     },
     {
       "name": "/read",
       "want": 402,
       "status": 402,
-      "ms": 47,
+      "ms": 554,
       "ok": true
     },
     {
       "name": "/domain",
       "want": 402,
       "status": 402,
-      "ms": 27,
+      "ms": 14,
       "ok": true
     },
     {
       "name": "/email-check",
       "want": 402,
       "status": 402,
-      "ms": 26,
+      "ms": 27,
       "ok": true
     },
     {
       "name": "/injection-check",
       "want": 402,
       "status": 402,
-      "ms": 14,
+      "ms": 25,
       "ok": true
     },
     {
       "name": "/package-check",
       "want": 402,
       "status": 402,
-      "ms": 25,
+      "ms": 32,
       "ok": true
     },
     {
@@ -65,42 +65,42 @@
       "name": "/chain/token-report",
       "want": 402,
       "status": 402,
-      "ms": 18,
+      "ms": 29,
       "ok": true
     },
     {
       "name": "/chain/honeypot",
       "want": 402,
       "status": 402,
-      "ms": 26,
+      "ms": 31,
       "ok": true
     },
     {
       "name": "/chain/preflight",
       "want": 402,
       "status": 402,
-      "ms": 25,
+      "ms": 28,
       "ok": true
     },
     {
       "name": "/chain/sanctions",
       "want": 402,
       "status": 402,
-      "ms": 26,
+      "ms": 28,
       "ok": true
     },
     {
       "name": "/federal-register",
       "want": 402,
       "status": 402,
-      "ms": 27,
+      "ms": 31,
       "ok": true
     },
     {
       "name": "/mcp tools/list",
       "want": "40+ tools",
       "status": 200,
-      "ms": 39,
+      "ms": 22,
       "tools": 41,
       "ok": true
     }
